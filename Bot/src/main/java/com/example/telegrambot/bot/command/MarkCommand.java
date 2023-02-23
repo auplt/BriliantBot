@@ -3,6 +3,7 @@ package com.example.telegrambot.bot.command;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -14,7 +15,6 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.Scanner;
 
-
 public class MarkCommand extends CustomCommand {
 
     public MarkCommand() {
@@ -23,13 +23,10 @@ public class MarkCommand extends CustomCommand {
 
     public void processMessage(AbsSender absSender, Message message, String[] arguments) {
         execute(absSender, message.getFrom(), message.getChat(), arguments);
-        //System.out.println("MarkProcessMessage");
     }
 
     @Override
     public void execute(AbsSender absSender, User user, Chat chat, String[] arguments) {
-        //System.out.println("MarkExecute");
-
         SendMessage message = new SendMessage();
         message.setChatId(chat.getId().toString());
 
@@ -47,7 +44,6 @@ public class MarkCommand extends CustomCommand {
     }
 
     public String getMark(String stud) throws IOException, ParseException {
-        //System.out.println("MarkGetMark");
         URL url = new URL("http://127.0.0.1:5000/api/avg?stud=" + stud);
         Scanner scanner = new Scanner((InputStream) url.getContent());
         StringBuilder result = new StringBuilder();

@@ -14,10 +14,11 @@ public class StartCommand extends CustomCommand {
 
     @Override
     public void processMessage(AbsSender absSender, Message message, String[] strings) {
-        message.setText("Добро пожаловать! \n" + "Вас приветствует бот @QRVisorBot, у меня простые функции: чтение и генерация QR-кодов. \n" + "Начнём?");
+        message.setText("Добро пожаловать! \n"
+                + "Вас приветствует бот @HelpToPlanStudyBot, у меня простые функции: помагать вам планировать учёбу. \n"
+                + "Начнём?");
         super.processMessage(absSender, message, null);
     }
-
 
     @Override
     public void execute(AbsSender absSender, User user, Chat chat, String[] arguments) {

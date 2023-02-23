@@ -13,9 +13,7 @@ public class HelpCommand extends CustomCommand {
     public HelpCommand(ICommandRegistry commandRegistry) {
         super("help", "list all known commands");
         mCommandRegistry = commandRegistry;
-        //System.out.println("Help");
     }
-
 
     @Override
     public void execute(AbsSender absSender, User user, Chat chat, String[] arguments) {
