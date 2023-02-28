@@ -29,6 +29,10 @@ input {
     width: 300px;
 }
 
+span {
+    color: red;
+}
+
 button {
     height: 40px;
     margin: 10px auto 0px auto;
