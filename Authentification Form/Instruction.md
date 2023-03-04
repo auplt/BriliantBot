@@ -8,28 +8,30 @@ https://www.npmjs.com/package/http-server
 npm install http-server -g
 
 
-## запуск сервера 
+## запуск http сервера 
 http-server
 
 
+## запуск https сервера
+http-server -S -C cert.pem
+
+
 ## адрес сервера
-http://localhost:8080/
+выводится в консоли
 
 
 
-# Включить https запросы (протокол SSl)
+# Включить https запросы (протокол SSL)
 
-## библиотека OpenSSL
+## официальный репозиторий OpenSSL
 https://github.com/openssl/openssl
 
-## необходимо собрать эту библиотеку
-библиотека на C, поэтому и собирать её надо в С компиляторе
-инструкции есть на гитхабе
+
+## инструкция по установке OpenSSL
+https://itsecforu.ru/2020/03/11/kak-ustanovit-ssl-na-windows-10/
+
 
 ## инструкция по генерации SSL ключа
 https://www.npmjs.com/package/http-server
-
-
-## 
 
 
