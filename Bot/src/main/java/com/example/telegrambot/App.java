@@ -8,11 +8,10 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 public class App {
     public static void main(String[] args) {
         try {
-            TelegramBotsApi botsApi =
-                    new TelegramBotsApi(
-                            DefaultBotSession.class);
-            botsApi.registerBot(new Bot());
-            System.out.println("YES");
+            TelegramBotsApi botsApi = new TelegramBotsApi(DefaultBotSession.class);
+            botsApi.registerBot(new Bot(new DefaultBotOptions()));
+
+            System.out.println("ONLINE");
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
