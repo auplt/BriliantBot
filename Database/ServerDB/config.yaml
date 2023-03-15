@@ -1,0 +1,5 @@
+user: postgres
+password: WiRe7301
+host: localhost
+database: StudentsDB
+port: 5432
