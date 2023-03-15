@@ -1,8 +1,6 @@
 package com.example.telegrambot.bot;
 
-import com.example.telegrambot.bot.command.HelpCommand;
-import com.example.telegrambot.bot.command.MarkCommand;
-import com.example.telegrambot.bot.command.StartCommand;
+import com.example.telegrambot.bot.command.*;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.extensions.bots.commandbot.TelegramLongPollingCommandBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -18,6 +16,7 @@ public class Bot extends TelegramLongPollingCommandBot {
         super(botOptions, true);
         this.register(new StartCommand());
         this.register(new HelpCommand(this));
+        this.register(new AuthCommand());
         this.register(new MarkCommand());
     }
 
