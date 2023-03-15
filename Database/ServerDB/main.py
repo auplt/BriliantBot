@@ -6,11 +6,9 @@ from project_config import ProjectConfig
 
 
 class Main:
-    config = ProjectConfig()
-    connection = DbConnection(config)
 
     def __init__(self):
-        DbTable.dbconn = self.connection
+        DbTable.dbconn = DbConnection(ProjectConfig())
         return
 
     @staticmethod
@@ -28,13 +26,15 @@ class Main:
     def main_cycle(self):
         self.db_init()
         self.default_insert()
-    # connection.drop_database(config)
-
-    # del connection
 
 
 config = ProjectConfig()
 connection = InitConnection(config)
+# connection.drop_database(config)
 connection.create_database(config)
+del connection
+
+
 m = Main()
 m.main_cycle()
+del m

@@ -30,6 +30,7 @@ class DbTable:
         cur = self.dbconn.conn.cursor()
         cur.execute(sql)
         self.dbconn.conn.commit()
+        cur.close()
         return
 
     def drop(self):
