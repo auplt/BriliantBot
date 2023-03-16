@@ -1,5 +1,6 @@
 package com.example.telegrambot.bot.command;
 
+import com.example.telegrambot.api.Student;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -14,6 +15,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Scanner;
+
+import static com.example.telegrambot.CustomerApplication.getCustomer;
 
 public class MarkCommand extends CustomCommand {
 
@@ -34,8 +37,10 @@ public class MarkCommand extends CustomCommand {
 
         try {
             // System.out.println(user.getId().toString());
-            result = getMark("65913");
-        } catch (IOException | ParseException e) {
+            Student student = getCustomer("test1");
+
+            result = getMark(student.getRecord().toString());
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -43,8 +48,8 @@ public class MarkCommand extends CustomCommand {
         execute(absSender, message, user);
     }
 
-    public String getMark(String stud) throws IOException, ParseException {
-        URL url = new URL("http://127.0.0.1:5000/api/avg?stud=" + stud);
+    public String getMark(String login) throws IOException, ParseException {
+        URL url = new URL("http://127.0.0.1:5000/api/avg?stud=" + login);
         Scanner scanner = new Scanner((InputStream) url.getContent());
         StringBuilder result = new StringBuilder();
         while (scanner.hasNext()) {
