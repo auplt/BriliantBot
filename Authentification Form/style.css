@@ -11,7 +11,6 @@ body {
 
 .form {
     width: 400px;
-    height: 300px;
     margin: 50px auto 0px auto;
     padding: 10px;
     border-style: solid;
@@ -22,7 +21,6 @@ body {
 
 .inputs {
     width: 300px;
-    height: 230px;
     margin: 5px auto 5px auto;
 }
 

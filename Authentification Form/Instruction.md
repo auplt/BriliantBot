@@ -14,6 +14,7 @@ http-server
 
 ## запуск https сервера
 http-server -S -C cert.pem
+--port 8081                     // будет 8081 порт
 
 
 ## адрес сервера

@@ -22,7 +22,9 @@ public class AuthCommand extends CustomCommand {
         SendMessage message = new SendMessage();
         message.setChatId(chat.getId().toString());
 
-        message.setText("Пожалуйста, авторизируйтесь: https://127.0.0.1:8080");
+        String address = "https://127.0.0.1:8080?tgid=" + user.getId().toString();
+
+        message.setText("Пожалуйста, авторизируйтесь: " + address);
         execute(absSender, message, user);
     }
 }
