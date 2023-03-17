@@ -13,44 +13,44 @@ var params = window
     );
 //console.log(params['tgid']);
 
-
+// POST запрос на подтверждение аутентификации
 const postData = async (url = '', data = {}) => {
     // Формируем запрос
     const response = await fetch(url, {
-      // Метод, если не указывать, будет использоваться GET
-      method: 'POST',
-     // Заголовок запроса
-      headers: {
+      method: 'POST', // Метод, если не указывать, будет использоваться GET
+      headers: {  // Заголовок запроса
         'Content-Type': 'application/json'
       },
-      // Данные
-      body: JSON.stringify(data)
+      body: JSON.stringify(data)  // Данные
     });
     return response.json(); 
   }
 
 
 function getData() {
-    var resL = document.getElementById('login').value;
-    var resP = document.getElementById('password').value;
-    
+  var resL = document.getElementById('login').value;
+  var resP = document.getElementById('password').value;
+  
   var pAlert = document.getElementById('forErrors');
   pAlert.textContent = "";
 
-    if (resL.length < 3) {
-        pAlert.textContent += 'Логин должен быть длинне 3 символов\n';
-        //alert('Login must contain at least 3 characters');
-    } 
-
-    if (resP.length < 3) {
-        pAlert.textContent += 'Пароль должен быть длинне 3 символов\n';
-        //alert('Password must contain at least 3 characters');
-    } 
-  
-    postData('', { tgid: params['tgid'] })
-    .then((data) => {
-        console.log(data); 
-    });
+  if (resL.length < 3) {
+    pAlert.textContent += 'Логин должен быть длинне 3 символов\n';
+    //alert('Login must contain at least 3 characters');
+  } 
+  else if (resP.length < 3) {
+    pAlert.textContent += 'Пароль должен быть длинне 3 символов\n';
+    //alert('Password must contain at least 3 characters');
+  } 
+  else {
+    var resp = postData('', { tgid: params['tgid'] });
+    //  .then((data) => { 
+    //    console.log(data); 
+    //    pAlert.textContent = data;
+    //  });
+    console.log(resp); 
+    pAlert.textContent = resp;
+  }
 }
 
 
