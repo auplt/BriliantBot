@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, request
 import json
 import hashlib
@@ -15,12 +17,31 @@ def auth():
     client_id = request.form.get("client_id")
     client_secret_input = request.form.get("client_secret")
 
+    print(client_id, client_secret_input)
+
     # the client secret in the database is "hashed" with a one-way hash
+
     hash_object = hashlib.sha1(bytes(client_secret_input, 'utf-8'))
-    hashed_client_secret = hash_object.hexdigest()
+
+    salt = os.urandom(32)
+    print(salt)
+    salt=b'[\xe6B\xb6\xdb\x7f\x87\x0e\xe3s\xf8\x19\xae8m,mwC\xba:\xc9\xb9\x86\x97,\x13]\xa6je\xee'
+
+    key =  hashlib.pbkdf2_hmac(
+        'sha256',  # Используемый алгоритм хеширования
+        client_secret_input.encode('utf-8'),  # Конвертирование пароля в байты
+        salt,  # Предоставление соли
+        100000,  # Рекомендуется использоваться по крайней мере 100000 итераций SHA-256
+        dklen=32)
+    print(key)
+    key_str = key.hex()
+
+    print(key_str)
+
+    # hashed_client_secret = hash_object.hexdigest()
 
     # make a call to the model to authenticate
-    authentication = authModel.authenticate(client_id, hashed_client_secret)
+    authentication = authModel.authenticate(client_id, key_str)
     if authentication == False:
         return {'success': False}
     else:

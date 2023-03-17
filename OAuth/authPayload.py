@@ -6,7 +6,7 @@ class authPayload(dict):
 
     def __init__(self, id, clientId, isAdmin):
 
-        EXPIRESSECONDS = int(os.getenv('EXPIRESSECONDS'))
+        EXPIRESSECONDS = int(30000)
 
         # set the id of the object from Postgres
         self.id = id

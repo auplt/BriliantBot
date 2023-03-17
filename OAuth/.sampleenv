@@ -1,5 +1,5 @@
-DBNAME=authdb
-DBUSER=postgres
-DBPASSWORD=WiRe7301
-AUTHSECRET=ldlskfsdfjaljl
+DBNAME="authdb"
+DBUSER="postgres"
+DBPASSWORD="WiRe7301"
+AUTHSECRET="ldlskfsdfjaljl"
 EXPIRESSECONDS=3000 

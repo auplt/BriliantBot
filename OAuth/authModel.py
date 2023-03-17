@@ -2,6 +2,8 @@ import os
 import json
 
 # pip install psycopg2
+import traceback
+
 import psycopg2
 
 # pip install -U python-dotenv
@@ -19,29 +21,34 @@ from authResponse import authResponse
 DBNAME = os.getenv('DBNAME')
 DBUSER = os.getenv('DBUSER')
 DBPASSWORD = os.getenv("DBPASSWORD")
-AUTHSECRET = os.getenv("AUTHSECRET")
-EXPIRESSECONDS = os.getenv('EXPIRESSECONDS')
+AUTHSECRET = "dlksjgf"
+EXPIRESSECONDS = 30000
 
 
 def authenticate(clientId, clientSecret):
     conn = None
-    query = "select * from clients where \"ClientId\"='" + clientId + "' and \"ClientSecret\"='" + clientSecret + "'"
+    query = "select * from passwords where login='" + clientId + "' and pass='" + clientSecret + "'"
+    print(query)
     try:
-        conn = psycopg2.connect("dbname=" + DBNAME + " user=" + DBUSER + " password=" + DBPASSWORD)
+        conn = psycopg2.connect("dbname=" + "authdb" + " user=" + "postgres" + " password=" + "WiRe7301")
         cur = conn.cursor()
         cur.execute(query)
         rows = cur.fetchall()
         isAdmin = False
-
+        print(rows)
+        print("*^&&^*^&", cur.rowcount)
         if cur.rowcount == 1:
             for row in rows:
-                isAdmin = row[3]
+                print(row)
+                isAdmin = False
                 payload = authPayload(row[0], row[1], isAdmin)
+                print("ryqwqtyw",payload)
                 break
-
+            print(payload.__dict__)
             encoded_jwt = jwt.encode(payload.__dict__, AUTHSECRET, algorithm='HS256')
+            print(encoded_jwt)
             response = authResponse(encoded_jwt, EXPIRESSECONDS, isAdmin)
-
+            print(response)
             return response.__dict__
         else:
             return False
@@ -49,6 +56,8 @@ def authenticate(clientId, clientSecret):
     except (Exception, psycopg2.DatabaseError) as error:
 
         print(error)
+        print(traceback.format_exc())
+
         if conn is not None:
             cur.close()
             conn.close()
