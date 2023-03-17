@@ -24,19 +24,19 @@ def auth():
     hash_object = hashlib.sha1(bytes(client_secret_input, 'utf-8'))
 
     salt = os.urandom(32)
-    print(salt)
-    salt=b'[\xe6B\xb6\xdb\x7f\x87\x0e\xe3s\xf8\x19\xae8m,mwC\xba:\xc9\xb9\x86\x97,\x13]\xa6je\xee'
+    # print(salt)
+    salt = b'[\xe6B\xb6\xdb\x7f\x87\x0e\xe3s\xf8\x19\xae8m,mwC\xba:\xc9\xb9\x86\x97,\x13]\xa6je\xee'
 
-    key =  hashlib.pbkdf2_hmac(
+    key = hashlib.pbkdf2_hmac(
         'sha256',  # Используемый алгоритм хеширования
         client_secret_input.encode('utf-8'),  # Конвертирование пароля в байты
         salt,  # Предоставление соли
         100000,  # Рекомендуется использоваться по крайней мере 100000 итераций SHA-256
         dklen=32)
-    print(key)
+    # print(key)
     key_str = key.hex()
 
-    print(key_str)
+    # print(key_str)
 
     # hashed_client_secret = hash_object.hexdigest()
 

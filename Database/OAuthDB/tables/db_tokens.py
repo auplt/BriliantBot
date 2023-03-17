@@ -8,7 +8,7 @@ class TokensTable(DbTable):
 
     def columns(self):
         return {"login": ["varchar(64)", "PRIMARY KEY"],
-                "token": ["varchar(64)"],
+                "token": ["varchar(512)"],
                 "date_start": ["TIMESTAMP"],
                 "date_end": ["TIMESTAMP"],
                 "date_last": ["TIMESTAMP"],

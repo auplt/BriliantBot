@@ -1,3 +1,5 @@
+import datetime
+import math
 import os
 import json
 
@@ -27,29 +29,47 @@ EXPIRESSECONDS = 30000
 
 def authenticate(clientId, clientSecret):
     conn = None
+    encoded_jwt = ''
     query = "select * from passwords where login='" + clientId + "' and pass='" + clientSecret + "'"
-    print(query)
+    # sql = "INSERT INTO tokens VALUES ('" + clientId + "', '" + encoded_jwt +"', " + "now(), " + "now() + '"+ str(EXPIRESSECONDS) +" second', "+"now())"
+    # print(query)
     try:
         conn = psycopg2.connect("dbname=" + "authdb" + " user=" + "postgres" + " password=" + "WiRe7301")
         cur = conn.cursor()
         cur.execute(query)
         rows = cur.fetchall()
         isAdmin = False
-        print(rows)
-        print("*^&&^*^&", cur.rowcount)
+        # print(rows)
+        # print("*^&&^*^&", cur.rowcount)
         if cur.rowcount == 1:
+            if check_token(conn, clientId):
+                # print(check_token(conn, clientId))
+                cur.execute("DELETE FROM tokens WHERE login='" + clientId + "'")
+                conn.commit()
+
             for row in rows:
-                print(row)
+                # print(row)
                 isAdmin = False
                 payload = authPayload(row[0], row[1], isAdmin)
-                print("ryqwqtyw",payload)
+                # print("ryqwqtyw",payload)
                 break
-            print(payload.__dict__)
+
+            # print(payload.__dict__)
             encoded_jwt = jwt.encode(payload.__dict__, AUTHSECRET, algorithm='HS256')
-            print(encoded_jwt)
+            # print(encoded_jwt)
             response = authResponse(encoded_jwt, EXPIRESSECONDS, isAdmin)
-            print(response)
+            # print(response)
+            sql = "INSERT INTO tokens VALUES ('" + clientId + "', '" + encoded_jwt + "', " + "now(), " + "now() + '" + str(
+                EXPIRESSECONDS) + " second', " + "now())"
+            cur.execute(sql)
+            conn.commit()
+            # print(time_check(encoded_jwt))
+            # cur.close()
+            # print(sql)
+            # print(jwt.decode(encoded_jwt, AUTHSECRET, algorithms=['HS256']))
             return response.__dict__
+
+
         else:
             return False
 
@@ -67,6 +87,26 @@ def authenticate(clientId, clientSecret):
         if conn is not None:
             cur.close()
             conn.close()
+
+
+def time_check(token):
+    token_time = jwt.decode(token, AUTHSECRET, algorithms=['HS256'])['exp']
+    import time
+    # print(math.trunc(time.time()), token_time)
+    if math.trunc(time.time()) < float(token_time):
+        return True
+    return False
+
+
+def check_token(conn, login):
+    sql = "select * from tokens where login='" + login + "'"
+    cur = conn.cursor()
+    cur.execute(sql)
+    # cur.fetchall()
+    # print(cur.rowcount)
+    if cur.rowcount == 1:
+        return True
+    return False
 
 
 def verify(token):

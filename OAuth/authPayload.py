@@ -2,10 +2,10 @@ from datetime import datetime
 from datetime import timedelta
 import os
 
+
 class authPayload(dict):
 
     def __init__(self, id, clientId, isAdmin):
-
         EXPIRESSECONDS = int(30000)
 
         # set the id of the object from Postgres

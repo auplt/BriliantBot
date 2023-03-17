@@ -22,16 +22,17 @@ class Main:
 
     @staticmethod
     def default_insert():
+        print()
         pt = PassTable()
-        pt.insert_one(["test1", "e8ce4a906efe272e0d59bd2dc89a2e9bb46e2434a9238d2c10e402355665191d", "saklsdpemfjcmslr"])
-        pt.insert_one(["test2", "222d55e47295a96df56a0ffacfb7929496a91663ea94d967801bc372a8860144", "saklsdpemfjcmslr"])
-        tt = TokensTable()
-        tt.insert_one(
-            ["test1", "e8ce4a906efe272e0d59bd2dc89a2e9bb46e2434a9238d2c10e402355665191d", "2022-04-04 14:33:06.442768",
-             "2022-04-04 14:33:06.442768", "2022-04-04 14:33:06.442768", "http://"])
-        tt.insert_one(
-            ["test2", "222d55e47295a96df56a0ffacfb7929496a91663ea94d967801bc372a8860144", "2022-04-04 14:33:06.442768",
-             "2022-04-04 14:33:06.442768", "now()", "http://"])
+        pt.insert_one(["test1", "ed18095862d4fdca8960ba208ad9e61c237c46cc751042c62d12175b8959fbed", "saklsdpemfjcmslr"])
+        # pt.insert_one(["test2", "222d55e47295a96df56a0ffacfb7929496a91663ea94d967801bc372a8860144", "saklsdpemfjcmslr"])
+        # tt = TokensTable()
+        # tt.insert_one(
+        #     ["test1", "e8ce4a906efe272e0d59bd2dc89a2e9bb46e2434a9238d2c10e402355665191d", "2022-04-04 14:33:06.442768",
+        #      "2022-04-04 14:33:06.442768", "2022-04-04 14:33:06.442768", "http://"])
+        # tt.insert_one(
+        #     ["test2", "222d55e47295a96df56a0ffacfb7929496a91663ea94d967801bc372a8860144", "2022-04-04 14:33:06.442768",
+        #      "2022-04-04 14:33:06.442768", "now()", "http://"])
 
     def main_cycle(self):
         self.db_init()
@@ -40,7 +41,7 @@ class Main:
 
 config = ProjectConfig()
 connection = InitConnection(config)
-# connection.drop_database(config)
+connection.drop_database(config)
 connection.create_database(config)
 del connection
 
