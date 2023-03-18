@@ -6,42 +6,56 @@ import hashlib
 
 import authModel
 
+import secrets
+import string
+
 # instantiate the Flask app.
 app = Flask(__name__)
 
+def generate_alphanum_crypt_string(length):
+    letters_and_digits = string.ascii_letters + string.digits + string.punctuation
+    crypt_rand_string = ''.join(secrets.choice(
+        letters_and_digits) for i in range(length))
+    return crypt_rand_string
 
 # API Route for checking the client_id and client_secret
 @app.route("/auth", methods=["POST"])
 def auth():
     # get the client_id and secret from the client application
-    client_id = request.form.get("client_id")
-    client_secret_input = request.form.get("client_secret")
+    client_id = request.form.get("client_id") # test1
+    client_secret_input = request.form.get("client_secret") # aaaaa
 
     print(client_id, client_secret_input)
 
     # the client secret in the database is "hashed" with a one-way hash
 
-    hash_object = hashlib.sha1(bytes(client_secret_input, 'utf-8'))
+    # hash_object = hashlib.sha1(bytes(client_secret_input, 'utf-8'))
 
-    salt = os.urandom(32)
+    # str = generate_alphanum_crypt_string(32)
+    # salt = bytearray(str, "utf-8")
+    # print(str)
+
+    # salt = os.urandom(32)
     # print(salt)
-    salt = b'[\xe6B\xb6\xdb\x7f\x87\x0e\xe3s\xf8\x19\xae8m,mwC\xba:\xc9\xb9\x86\x97,\x13]\xa6je\xee'
+    # print(salt.decode("utf-8"))
+    # salt = b'[\xe6B\xb6\xdb\x7f\x87\x0e\xe3s\xf8\x19\xae8m,mwC\xba:\xc9\xb9\x86\x97,\x13]\xa6je\xee'
+    # print(salt.decode("utf-8"))
 
-    key = hashlib.pbkdf2_hmac(
-        'sha256',  # Используемый алгоритм хеширования
-        client_secret_input.encode('utf-8'),  # Конвертирование пароля в байты
-        salt,  # Предоставление соли
-        100000,  # Рекомендуется использоваться по крайней мере 100000 итераций SHA-256
-        dklen=32)
-    # print(key)
-    key_str = key.hex()
-
+    # key = hashlib.pbkdf2_hmac(
+    #     'sha256',  # Используемый алгоритм хеширования
+    #     client_secret_input.encode('utf-8'),  # Конвертирование пароля в байты
+    #     salt,  # Предоставление соли
+    #     100000,  # Рекомендуется использоваться по крайней мере 100000 итераций SHA-256
+    #     dklen=32)
+    # # print(key)
+    # key_str = key.hex()
+    #
     # print(key_str)
 
     # hashed_client_secret = hash_object.hexdigest()
 
     # make a call to the model to authenticate
-    authentication = authModel.authenticate(client_id, key_str)
+    authentication = authModel.authenticate(client_id, client_secret_input)
     if authentication == False:
         return {'success': False}
     else:

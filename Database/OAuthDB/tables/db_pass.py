@@ -9,7 +9,7 @@ class PassTable(DbTable):
     def columns(self):
         return {"login": ["varchar(64)", "PRIMARY KEY"],
                 "pass": ["varchar(64)"],
-                "salt": ["varchar(16)"]}
+                "salt": ["varchar(32)"]}
 
     def find_by_id(self, login):
         cur = self.dbconn.conn.cursor()

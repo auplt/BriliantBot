@@ -24,7 +24,7 @@ class Main:
     def default_insert():
         print()
         pt = PassTable()
-        pt.insert_one(["test1", "ed18095862d4fdca8960ba208ad9e61c237c46cc751042c62d12175b8959fbed", "saklsdpemfjcmslr"])
+        pt.insert_one(["test1", "cc2e8b6d911a32d68513435518df80d995a598e3ff02f37e184ecb625000029e", "i$A\"<KbUj-4%ZEh91?7s\"[}yAaJL|,mH"])
         # pt.insert_one(["test2", "222d55e47295a96df56a0ffacfb7929496a91663ea94d967801bc372a8860144", "saklsdpemfjcmslr"])
         # tt = TokensTable()
         # tt.insert_one(
