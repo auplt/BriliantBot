@@ -41,24 +41,24 @@ def salt_check(client_secret_input, salt):
     return key_str
 
 
-def authenticate(clientId, clientSecret):
+def authenticate(login, passwd):
     conn = None
     tg_id = "11111"
     encoded_jwt = ''
-    # query = "select * from passwords where login='" + clientId + "' and pass='" + clientSecret + "'"
-    # sql = "INSERT INTO tokens VALUES ('" + clientId + "', '" + encoded_jwt +"', " + "now(), " + "now() + '"+ str(EXPIRESSECONDS) +" second', "+"now())"
+    # query = "select * from passwords where login='" + login + "' and pass='" + passwd + "'"
+    # sql = "INSERT INTO tokens VALUES ('" + login + "', '" + encoded_jwt +"', " + "now(), " + "now() + '"+ str(EXPIRESSECONDS) +" second', "+"now())"
     # print(query)
     try:
-        # query = "select * from passwords where login='" + clientId + "' and pass='" + clientSecret + "'"
+        # query = "select * from passwords where login='" + login + "' and pass='" + passwd + "'"
         conn = psycopg2.connect("dbname=" + "authdb" + " user=" + "postgres" + " password=" + "WiRe7301")
         cur = conn.cursor()
 
-        query = "select salt, pass from passwords where login='" + clientId +"'"
+        query = "select salt, pass from passwords where login='" + login +"'"
         cur.execute(query)
         rows=cur.fetchall()
         # print(rows[0])
         if cur.rowcount == 1:
-            if salt_check(clientSecret, bytearray(rows[0][0], "utf-8")) == rows[0][1]:
+            if salt_check(passwd, bytearray(rows[0][0], "utf-8")) == rows[0][1]:
 
                 isAdmin = False
                 # cur.execute(query)
@@ -67,9 +67,9 @@ def authenticate(clientId, clientSecret):
                 # print(rows)
                 # print("*^&&^*^&", cur.rowcount)
                 # if cur.rowcount == 1:
-                if check_token(conn, clientId):
-                    # print(check_token(conn, clientId))
-                    cur.execute("DELETE FROM tokens WHERE login='" + clientId + "'")
+                if check_token(conn, login):
+                    # print(check_token(conn, login))
+                    cur.execute("DELETE FROM tokens WHERE login='" + login + "'")
                     conn.commit()
 
                 for row in rows:
@@ -85,20 +85,20 @@ def authenticate(clientId, clientSecret):
                 # print(encoded_jwt)
                 response = authResponse(encoded_jwt)
                 # print(response)
-                sql = "INSERT INTO tokens VALUES ('" + clientId + "', '" + encoded_jwt + "', " + "now(), " + "now() + '" + str(
+                sql = "INSERT INTO tokens VALUES ('" + login + "', '" + encoded_jwt + "', " + "now(), " + "now() + '" + str(
                     EXPIRESSECONDS) + " second', " + "now())"
                 cur.execute(sql)
                 conn.commit()
                 # print("####")
-                query = "SELECT * FROM sessions WHERE login='"  + clientId + "'"
+                query = "SELECT * FROM sessions WHERE login='"  + login + "'"
                 conn = psycopg2.connect("dbname=" + "sessionsdb" + " user=" + "postgres" + " password=" + "WiRe7301")
                 cur = conn.cursor()
-                cur.execute(query, str(clientId))
+                cur.execute(query, str(login))
                 # print("&&&&")
                 if cur.rowcount == 1:
-                    cur.execute("DELETE FROM sessions WHERE login='" + clientId + "'")
+                    cur.execute("DELETE FROM sessions WHERE login='" + login + "'")
                     conn.commit()
-                insert_session_db(clientId, tg_id, encoded_jwt)
+                insert_session_db(login, tg_id, encoded_jwt)
                 # print(jwt.decode(encoded_jwt, AUTHSECRET, algorithms=['HS256']))
                 # print(time_check(encoded_jwt))
                 # cur.close()
@@ -169,14 +169,14 @@ def verify(token):
         return {"success": False}
 
 
-def create(clientId, clientSecret, isAdmin):
+def create(login, passwd, isAdmin):
     conn = None
-    query = "insert into clients (\"ClientId\", \"ClientSecret\", \"IsAdmin\") values(%s,%s,%s)"
+    query = "insert into clients (\"login\", \"passwd\", \"IsAdmin\") values(%s,%s,%s)"
 
     try:
         conn = psycopg2.connect("dbname=" + DBNAME + " user=" + DBUSER + " password=" + DBPASSWORD)
         cur = conn.cursor()
-        cur.execute(query, (clientId, clientSecret, isAdmin))
+        cur.execute(query, (login, passwd, isAdmin))
         conn.commit()
         return True
     except (Exception, psycopg2.DatabaseError) as error:

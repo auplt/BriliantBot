@@ -1,31 +1,29 @@
-import os
-
 from flask import Flask, request
 import json
 import hashlib
-
-import authModel
-
 import secrets
 import string
+import authModel
 
 # instantiate the Flask app.
 app = Flask(__name__)
 
+
 def generate_alphanum_crypt_string(length):
     letters_and_digits = string.ascii_letters + string.digits + string.punctuation
     crypt_rand_string = ''.join(secrets.choice(
-        letters_and_digits) for i in range(length))
+        letters_and_digits) for _ in range(length))
     return crypt_rand_string
 
+
 # API Route for checking the client_id and client_secret
-@app.route("/auth", methods=["POST"])
+@app.route("/brilliantbot/api/auth", methods=["POST"])
 def auth():
     # get the client_id and secret from the client application
-    client_id = request.form.get("client_id") # test1
-    client_secret_input = request.form.get("client_secret") # aaaaa
+    login = request.form.get("login")  # test1
+    passwd = request.form.get("passwd")  # aaaaa
 
-    print(client_id, client_secret_input)
+    print(login, passwd)
 
     # the client secret in the database is "hashed" with a one-way hash
 
@@ -55,40 +53,40 @@ def auth():
     # hashed_client_secret = hash_object.hexdigest()
 
     # make a call to the model to authenticate
-    authentication = authModel.authenticate(client_id, client_secret_input)
-    if authentication == False:
+    authentication = authModel.authenticate(login, passwd)
+    if not authentication:
         return {'success': False}
     else:
         return json.dumps(authentication)
 
 
 # API route for verifying the token passed by API calls
-@app.route("/verify", methods=["POST"])
+@app.route("/brilliantbot/api/verify", methods=["POST"])
 def verify():
     # verify the token
-    authorizationHeader = request.headers.get('authorization')
-    token = authorizationHeader.replace("Bearer ", "")
+    authorization_header = request.headers.get('authorization')
+    token = authorization_header.replace("Bearer ", "")
     verification = authModel.verify(token)
     return verification
 
 
-@app.route("/logout", methods=["POST"])
+@app.route("/brilliantbot/api/logout", methods=["POST"])
 def logout():
     token = request.form.get("token")
     status = authModel.blacklist(token)
     return {'success': status}
 
 
-@app.route("/client", methods=["POST", "DELETE"])
+@app.route("/brilliantbot/api/client", methods=["POST", "DELETE"])
 def client():
     if request.method == 'POST':
 
         # verify the token
-        authorizationHeader = request.headers.get('authorization')
-        token = authorizationHeader.replace("Bearer ", "")
+        authorization_header = request.headers.get('authorization')
+        token = authorization_header.replace("Bearer ", "")
         verification = authModel.verify(token)
 
-        if verification.get("isAdmin") == True:
+        if verification.get("isAdmin"):
             # get the client_id and secret from the client application
             client_id = request.form.get("client_id")
             client_secret_input = request.form.get("client_secret")
@@ -99,8 +97,8 @@ def client():
             hashed_client_secret = hash_object.hexdigest()
 
             # make a call to the model to authenticate
-            createResponse = authModel.create(client_id, hashed_client_secret, is_admin)
-            return {'success': createResponse}
+            create_response = authModel.create(client_id, hashed_client_secret, is_admin)
+            return {'success': create_response}
         else:
             return {'success': False, 'message': 'Access Denied'}
 
