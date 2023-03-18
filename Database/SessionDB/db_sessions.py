@@ -10,7 +10,7 @@ class RecordsTable(DbTable):
         return {"login": ["varchar(64)", "PRIMARY KEY"],
                 "tg_id": ["varchar(10)"],
                 "create_date": ["TIMESTAMP"],
-                "token": ["varchar(64)"]}
+                "token": ["varchar(512)"]}
 
     def find_by_id(self, login):
         cur = self.dbconn.conn.cursor()
