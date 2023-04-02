@@ -2,15 +2,25 @@
 
 from flask import Flask, request, jsonify
 
+from auth_func import *
+
 app = Flask(__name__)
 
-@app.route('/', methods=['POST'])
+#аутентификация пользователя
+@app.route('/auth_form', methods=['POST'])
 def login():
     data = request.get_json()
     login = data['login']
-    passwd= data['password']
-    print (login,passwd)
-    return jsonify({'message': login+passwd})
+    passwd = data['password']
+    check_passwd(login, passwd)
+
+
+@app.route('/java_bot', methods=['POST'])
+def from_java():
+    data = request.get_json()
+    token = data['token']
+    return check_token(token)
+
 
 if __name__ == '__main__':
     app.run(port=5001)
