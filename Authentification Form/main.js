@@ -43,13 +43,16 @@ function getData() {
     //alert('Password must contain at least 3 characters');
   } 
   else {
-    var resp = postData('', { tgid: params['tgid'] });
-    //  .then((data) => { 
-    //    console.log(data); 
-    //    pAlert.textContent = data;
-    //  });
-    console.log(resp); 
-    pAlert.textContent = resp;
+    //var resp = 
+    postData('http://127.0.0.1:5001', { 
+      // tgid: params['tgid'] 
+      login: resL, password: resP
+    }).then((data) => { 
+      console.log(data); 
+      pAlert.textContent = data; 
+    });
+    //console.log(resp); 
+    //pAlert.textContent = resp;
   }
 }
 
