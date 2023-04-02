@@ -5,9 +5,12 @@ import secrets
 import string
 import authModel
 
+from flask_cors import CORS, cross_origin
+
 # instantiate the Flask app.
 app = Flask(__name__)
-
+cors=CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
 def generate_alphanum_crypt_string(length):
     letters_and_digits = string.ascii_letters + string.digits + string.punctuation
@@ -18,6 +21,7 @@ def generate_alphanum_crypt_string(length):
 
 # API Route for checking the client_id and client_secret
 @app.route("/brilliantbot/api/auth", methods=["POST"])
+@cross_origin()
 def auth():
     # get the client_id and secret from the client application
     login = request.form.get("login")  # test1
@@ -57,7 +61,8 @@ def auth():
     if not authentication:
         return {'success': False}
     else:
-        return json.dumps(authentication)
+        return {'success': True}
+            #json.dumps(authentication)
 
 
 # API route for verifying the token passed by API calls
