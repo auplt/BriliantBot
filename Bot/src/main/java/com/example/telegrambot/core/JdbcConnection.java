@@ -17,7 +17,7 @@ public class JdbcConnection {
         if (connection.isEmpty()) {
             String url = "jdbc:postgresql://localhost:5432/studentsdb";
             String user = "postgres";
-            String password = "WiRe7301";
+            String password = "12345";
 
             try {
                 connection = Optional.ofNullable(
