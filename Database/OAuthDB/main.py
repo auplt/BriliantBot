@@ -26,13 +26,13 @@ class Main:
         pt = PassTable()
         pt.insert_one(["test1", "cc2e8b6d911a32d68513435518df80d995a598e3ff02f37e184ecb625000029e", "i$A\"<KbUj-4%ZEh91?7s\"[}yAaJL|,mH"])
         # pt.insert_one(["test2", "222d55e47295a96df56a0ffacfb7929496a91663ea94d967801bc372a8860144", "saklsdpemfjcmslr"])
-        # tt = TokensTable()
-        # tt.insert_one(
-        #     ["test1", "e8ce4a906efe272e0d59bd2dc89a2e9bb46e2434a9238d2c10e402355665191d", "2022-04-04 14:33:06.442768",
-        #      "2022-04-04 14:33:06.442768", "2022-04-04 14:33:06.442768", "http://"])
-        # tt.insert_one(
-        #     ["test2", "222d55e47295a96df56a0ffacfb7929496a91663ea94d967801bc372a8860144", "2022-04-04 14:33:06.442768",
-        #      "2022-04-04 14:33:06.442768", "now()", "http://"])
+        tt = TokensTable()
+        tt.insert_one(
+            ["test1", "e8ce4a906efe272e0d59bd2dc89a2e9bb46e2434a9238d2c10e402355665191d", "2022-04-04 14:33:06.442768",
+             "2022-04-04 14:33:06.442768", "2022-04-04 14:33:06.442768", "http://"])
+        tt.insert_one(
+            ["test2", "222d55e47295a96df56a0ffacfb7929496a91663ea94d967801bc372a8860144", "2022-04-04 14:33:06.442768",
+             "2022-04-04 14:33:06.442768", "now()", "http://"])
 
     def main_cycle(self):
         self.db_init()

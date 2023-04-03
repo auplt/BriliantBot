@@ -128,11 +128,12 @@ def authenticate(login, passwd):
 
 #проверка срока годности токена
 def check_token(token):
-    conn = psycopg2.connect("dbname=" + "authdb" + " user=" + "postgres" + " password=" + "12345")
+    conn = psycopg2.connect("dbname=" + "authdb" + " user=" + "postgres" + " password=" + "WiRe7301")
     query = "select date_end  from tokens where token=\'" + token + "\'"
     cur = conn.cursor()
     cur.execute(query)
     date_end = cur.fetchone()
+    # print(date_end)
     if datetime.datetime.now() < date_end[0]:
         return True
 
@@ -173,17 +174,17 @@ def insert_session_db(login, tg_id, token):
 
 
 
-def verify(token):
-    try:
-        isBlacklisted = checkBlacklist(token)
-        if isBlacklisted == True:
-            return {"success": False}
-        else:
-            decoded = jwt.decode(token, AUTHSECRET, algorithms=['HS256'])
-            return decoded
-    except (Exception) as error:
-        print(error)
-        return {"success": False}
+# def verify(token):
+#     try:
+#         isBlacklisted = checkBlacklist(token)
+#         if isBlacklisted == True:
+#             return {"success": False}
+#         else:
+#             decoded = jwt.decode(token, AUTHSECRET, algorithms=['HS256'])
+#             return decoded
+#     except (Exception) as error:
+#         print(error)
+#         return {"success": False}
 
 
 
@@ -234,14 +235,14 @@ def blacklist(token):
 
 
 def check_avialability(token):
-    query = "select * from blacklist where token=\'" + token + "\'"
+    query = "select login from tokens where token=\'" + token + "\'"
     try:
-        conn = psycopg2.connect("dbname=" + "authdb" + " user=" + "postgres" + " password=" + "12345")
+        conn = psycopg2.connect("dbname=" + "authdb" + " user=" + "postgres" + " password=" + "WiRe7301")
         cur = conn.cursor()
         cur.execute(query)
         result = cur.fetchone()
         if result is not None:
-            return True
+            return result
         else:
             return False
     except (Exception, psycopg2.DatabaseError) as error:

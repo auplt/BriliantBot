@@ -69,9 +69,9 @@ def auth():
 # check the token's lifetime
 @app.route("/brilliantbot/api/check_token", methods=["POST"])
 def check_tk():
-    print (request.form)
+    # print (request.form)
     token = request.form.get("token")
-    print ("**",token)
+    # print ("**",token)
     if authModel.check_avialability(token) is not None:
         login = authModel.check_avialability(token)
         status = authModel.check_token(token)

@@ -4,11 +4,13 @@ import com.example.telegrambot.api.Student;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Request;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -26,6 +28,7 @@ import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -47,7 +50,7 @@ public class MarkCommand extends CustomCommand {
         message.setChatId(chat.getId().toString());
 
         String result = "no avg_points";
-
+        String responseBody ="";
         try {
             String token="";
             String tg_id=user.getId().toString();
@@ -62,56 +65,26 @@ public class MarkCommand extends CustomCommand {
             System.out.println(token);
 
             String str = "token="+ token;
-            // @Deprecated HttpClient httpClient = new DefaultHttpClient();
             CloseableHttpClient httpClient = HttpClientBuilder.create().build();
             try {
                 HttpPost request = new HttpPost("http://127.0.0.1:5001/brilliantbot/api/check_token");
                 StringEntity params = new StringEntity(str);
                 request.addHeader("content-type", "application/x-www-form-urlencoded");
                 request.setEntity(params);
-                HttpResponse response = (HttpResponse) httpClient.execute(request);
-                System.out.println("***"+response);
+
+                CloseableHttpResponse response = httpClient.execute(request);
+
+                responseBody = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
+                System.out.println("Response body: " + responseBody);
             } catch (Exception ex) {
             } finally {
-                // @Deprecated httpClient.getConnectionManager().shutdown();
+//                @Deprecated httpClient.getConnectionManager().shutdown();
             }
 
-/*
-
-            final Content postResult = Request.Post("http://127.0.0.1:5001/brilliantbot/api/check_token")
-                    .bodyString(str, ContentType.APPLICATION_JSON)
-                    .execute().returnContent();
-            System.out.println(postResult.asString());
-*/
-            /*
-             var values = new HashMap<String, String>() {{
-                put("token", finalToken);
-            }};
-                    var objectMapper = new ObjectMapper();
-                                String requestBody = objectMapper
-                                        .writeValueAsString(values);
-
-                                HttpClient client = HttpClient.newHttpClient();
-                                HttpRequest request = HttpRequest.newBuilder()
-                                        .uri(URI.create("http://127.0.0.1:5001/brilliantbot/api/check_token"))
-                                        .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-                                        .build();
-
-                                HttpResponse<String> response = client.send(request,
-                                        HttpResponse.BodyHandlers.ofString());
-
-                                System.out.println(response.body());
-            */
-            // System.out.println(user.getId().toString());
-
-            //Student student = getCustomer("test1");
-            String res = "";
-
-            if ("test1".equals("test1")){
-                res = "65913";
-
-            }
-            result = getMark(res);
+            JSONParser parser = new JSONParser();
+            JSONObject JSobj = (JSONObject) parser.parse(responseBody);
+            Student student = getCustomer((String) JSobj.get("login"));
+            result = getMark(student.getRecord().toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
