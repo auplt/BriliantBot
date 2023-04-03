@@ -1,3 +1,4 @@
+import requests
 from flask import Flask, request
 import json
 import hashlib
@@ -68,12 +69,15 @@ def auth():
 # check the token's lifetime
 @app.route("/brilliantbot/api/check_token", methods=["POST"])
 def check_tk():
+    print (request.form)
     token = request.form.get("token")
-    if authModel.check_avialability(token):
+    print ("**",token)
+    if authModel.check_avialability(token) is not None:
+        login = authModel.check_avialability(token)
         status = authModel.check_token(token)
     else:
         status=False
-    return {'success': status}
+    return {'success': status, "login": login[0]}
 
 
 @app.route("/brilliantbot/api/logout", methods=["POST"])
