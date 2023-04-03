@@ -1,8 +1,8 @@
-import datetime
 import hashlib
 import math
 import os
 import json
+import datetime
 
 # pip install psycopg2
 import traceback
@@ -26,6 +26,7 @@ DBUSER = os.getenv('DBUSER')
 DBPASSWORD = os.getenv("DBPASSWORD")
 AUTHSECRET = "dlksjgf"
 EXPIRESSECONDS = 30000
+
 
 
 def salt_check(client_secret_input, salt):
@@ -125,17 +126,33 @@ def authenticate(login, passwd):
             cur.close()
             conn.close()
 
+#проверка срока годности токена
+def check_token(token):
+    conn = psycopg2.connect("dbname=" + "authdb" + " user=" + "postgres" + " password=" + "12345")
+    query = "select date_end  from tokens where token=\'" + token + "\'"
+    cur = conn.cursor()
+    cur.execute(query)
+    date_end = cur.fetchone()
+    if datetime.datetime.now() < date_end[0]:
+        return True
 
-def time_check(token):
+    if conn is not None:
+        cur.close()
+        conn.close()
+
+    return False
+
+
+"""def time_check(token):
     token_time = jwt.decode(token, AUTHSECRET, algorithms=['HS256'])['exp']
     import time
     # print(math.trunc(time.time()), token_time)
     if math.trunc(time.time()) < float(token_time):
         return True
-    return False
+    return False"""
 
 
-def check_token(conn, login):
+"""def check_token(conn, login):
     sql = "select * from tokens where login='" + login + "'"
     cur = conn.cursor()
     cur.execute(sql)
@@ -144,7 +161,7 @@ def check_token(conn, login):
     if cur.rowcount == 1:
         return True
     return False
-
+"""
 
 def insert_session_db(login, tg_id, token):
     query = "INSERT INTO sessions (login, tg_id, token) VALUES (%(login)s, %(tg_id)s, %(token)s)"
@@ -167,6 +184,8 @@ def verify(token):
     except (Exception) as error:
         print(error)
         return {"success": False}
+
+
 
 
 def create(login, passwd, isAdmin):
@@ -214,16 +233,14 @@ def blacklist(token):
             conn.close()
 
 
-def checkBlacklist(token):
-    conn = None
-    query = "select count(*) from blacklist where token=\'" + token + "\'"
-    print(query)
+def check_avialability(token):
+    query = "select * from blacklist where token=\'" + token + "\'"
     try:
-        conn = psycopg2.connect("dbname=" + DBNAME + " user=" + DBUSER + " password=" + DBPASSWORD)
+        conn = psycopg2.connect("dbname=" + "authdb" + " user=" + "postgres" + " password=" + "12345")
         cur = conn.cursor()
         cur.execute(query)
         result = cur.fetchone()
-        if result[0] == 1:
+        if result is not None:
             return True
         else:
             return False

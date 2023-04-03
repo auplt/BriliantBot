@@ -65,14 +65,15 @@ def auth():
             #json.dumps(authentication)
 
 
-# API route for verifying the token passed by API calls
-@app.route("/brilliantbot/api/verify", methods=["POST"])
-def verify():
-    # verify the token
-    authorization_header = request.headers.get('authorization')
-    token = authorization_header.replace("Bearer ", "")
-    verification = authModel.verify(token)
-    return verification
+# check the token's lifetime
+@app.route("/brilliantbot/api/check_token", methods=["POST"])
+def check_tk():
+    token = request.form.get("token")
+    if authModel.check_avialability(token):
+        status = authModel.check_token(token)
+    else:
+        status=False
+    return {'success': status}
 
 
 @app.route("/brilliantbot/api/logout", methods=["POST"])
