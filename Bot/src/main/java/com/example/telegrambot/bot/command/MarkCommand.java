@@ -1,12 +1,9 @@
 package com.example.telegrambot.bot.command;
 
+import com.example.telegrambot.api.Session;
 import com.example.telegrambot.api.Student;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.http.client.fluent.Content;
-import org.apache.http.client.fluent.Request;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -23,16 +20,12 @@ import org.telegram.telegrambots.meta.bots.AbsSender;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 import java.net.URL;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
 import java.util.Scanner;
 
-import static com.example.telegrambot.CustomerApplication.getCustomer;
+import static com.example.telegrambot.core.SessionActions.getSession;
+import static com.example.telegrambot.core.StudentActions.getStudent;
 
 public class MarkCommand extends CustomCommand {
 
@@ -53,16 +46,10 @@ public class MarkCommand extends CustomCommand {
         String responseBody ="";
         try {
             String token="";
-            String tg_id=user.getId().toString();
-            if (tg_id.equals("1103638534")) {
-                token="e8ce4a906efe272e0d59bd2dc89a2e9bb46e2434a9238d2c10e402355665191d";
+            Session session = getSession(user.getId().toString());
+            token = session.getToken();
 
-            }
-            if (tg_id.equals("965427525")) {
-                token="222d55e47295a96df56a0ffacfb7929496a91663ea94d967801bc372a8860144";
-
-            }
-            System.out.println(token);
+//            System.out.println(token);
 
             String str = "token="+ token;
             CloseableHttpClient httpClient = HttpClientBuilder.create().build();
@@ -75,7 +62,7 @@ public class MarkCommand extends CustomCommand {
                 CloseableHttpResponse response = httpClient.execute(request);
 
                 responseBody = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-                System.out.println("Response body: " + responseBody);
+//                System.out.println("Response body: " + responseBody);
             } catch (Exception ex) {
             } finally {
 //                @Deprecated httpClient.getConnectionManager().shutdown();
@@ -83,7 +70,7 @@ public class MarkCommand extends CustomCommand {
 
             JSONParser parser = new JSONParser();
             JSONObject JSobj = (JSONObject) parser.parse(responseBody);
-            Student student = getCustomer((String) JSobj.get("login"));
+            Student student = getStudent((String) JSobj.get("login"));
             result = getMark(student.getRecord().toString());
         } catch (Exception e) {
             e.printStackTrace();

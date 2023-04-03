@@ -7,18 +7,15 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class JdbcConnection {
-
+public class JdbcSessionConnection {
     private static final Logger LOGGER =
-            Logger.getLogger(JdbcConnection.class.getName());
+            Logger.getLogger(JdbcSessionConnection.class.getName());
     private static Optional<Connection> connection = Optional.empty();
-
     public static Optional<Connection> getConnection() {
         if (connection.isEmpty()) {
-            String url = "jdbc:postgresql://localhost:5432/studentsdb";
+            String url = "jdbc:postgresql://localhost:5432/sessionsdb";
             String user = "postgres";
             String password = "WiRe7301";
-
             try {
                 connection = Optional.ofNullable(
                         DriverManager.getConnection(url, user, password));
@@ -26,7 +23,6 @@ public class JdbcConnection {
                 LOGGER.log(Level.SEVERE, null, ex);
             }
         }
-
         return connection;
     }
 }
