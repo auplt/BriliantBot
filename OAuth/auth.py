@@ -1,5 +1,5 @@
 import requests
-from flask import Flask, request
+from flask import Flask, request, jsonify
 import json
 import hashlib
 import secrets
@@ -60,9 +60,11 @@ def auth():
     # make a call to the model to authenticate
     authentication = authModel.authenticate(login, passwd)
     if not authentication:
-        return {'success': False}
+        return jsonify({'success': False})
     else:
-        return {'success': True}
+        # authentication['success'] = True
+        # return {'success': True}
+        return jsonify(authentication)
             #json.dumps(authentication)
 
 

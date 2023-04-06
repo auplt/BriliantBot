@@ -5,6 +5,7 @@ import json
 import datetime
 
 # pip install psycopg2
+import time
 import traceback
 
 import psycopg2
@@ -68,10 +69,11 @@ def authenticate(login, passwd):
                 # print(rows)
                 # print("*^&&^*^&", cur.rowcount)
                 # if cur.rowcount == 1:
-                if check_token(conn, login):
-                    # print(check_token(conn, login))
-                    cur.execute("DELETE FROM tokens WHERE login='" + login + "'")
-                    conn.commit()
+
+                # if check_token(conn, login):
+                #     # print(check_token(conn, login))
+                #     cur.execute("DELETE FROM tokens WHERE login='" + login + "'")
+                #     conn.commit()
 
                 for row in rows:
                     # print(row)
@@ -84,12 +86,18 @@ def authenticate(login, passwd):
                 encoded_jwt = jwt.encode(payload.__dict__, AUTHSECRET, algorithm='HS256')
                 # print(payload.__dict__)
                 # print(encoded_jwt)
-                response = authResponse(encoded_jwt)
+
                 # print(response)
+                cur.execute("DELETE FROM tokens WHERE login='" + login + "'")
+                conn.commit()
                 sql = "INSERT INTO tokens VALUES ('" + login + "', '" + encoded_jwt + "', " + "now(), " + "now() + '" + str(
                     EXPIRESSECONDS) + " second', " + "now())"
                 cur.execute(sql)
                 conn.commit()
+
+                # create_date = datetime.datetime.strptime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S.%f')
+
+                response = authResponse(login, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f"), encoded_jwt)
                 # print("####")
                 query = "SELECT * FROM sessions WHERE login='"  + login + "'"
                 conn = psycopg2.connect("dbname=" + "sessionsdb" + " user=" + "postgres" + " password=" + "WiRe7301")
