@@ -9,9 +9,9 @@ class TokensTable(DbTable):
     def columns(self):
         return {"login": ["varchar(64)", "PRIMARY KEY"],
                 "token": ["varchar(512)"],
-                "date_start": ["TIMESTAMP"],
-                "date_end": ["TIMESTAMP"],
-                "date_last": ["TIMESTAMP"],
+                "date_start": ["TIMESTAMP WITH TIME ZONE"],
+                "date_end": ["TIMESTAMP WITH TIME ZONE"],
+                "date_last": ["TIMESTAMP WITH TIME ZONE"],
                 "address": ["varchar(512)"]}
 
     def find_by_id(self, login):

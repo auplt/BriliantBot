@@ -95,6 +95,8 @@ def authenticate(login, passwd):
                 cur.execute(sql)
                 conn.commit()
 
+                # cur.execute("SELECT * FROM sessions WHERE login='"  + login + "'")
+
                 # create_date = datetime.datetime.strptime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S.%f')
 
                 response = authResponse(login, datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f"), encoded_jwt)

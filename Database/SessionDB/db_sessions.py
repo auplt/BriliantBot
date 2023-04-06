@@ -9,7 +9,7 @@ class RecordsTable(DbTable):
     def columns(self):
         return {"login": ["varchar(64)", "PRIMARY KEY"],
                 "tg_id": ["varchar(10)"],
-                "create_date": ["TIMESTAMP"],
+                "end_date": ["TIMESTAMP WITH TIME ZONE"],
                 "token": ["varchar(512)"]}
 
     def find_by_id(self, login):

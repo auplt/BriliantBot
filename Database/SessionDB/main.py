@@ -20,8 +20,8 @@ class Main:
     @staticmethod
     def default_insert():
         rt = RecordsTable()
-        rt.insert_one(["test1", "1103638534", "2022-04-04 14:33:06.442768", "e8ce4a906efe272e0d59bd2dc89a2e9bb46e2434a9238d2c10e402355665191d"])
-        rt.insert_one(["test2", "965427525", "2021-04-04 14:33:06.442768", "222d55e47295a96df56a0ffacfb7929496a91663ea94d967801bc372a8860144"])
+        rt.insert_one(["test1", "1103638534", "2022-04-04 14:33:06.442768+03", "e8ce4a906efe272e0d59bd2dc89a2e9bb46e2434a9238d2c10e402355665191d"])
+        rt.insert_one(["test2", "965427525", "2021-04-04 14:33:06.442768+03", "222d55e47295a96df56a0ffacfb7929496a91663ea94d967801bc372a8860144"])
 
     def main_cycle(self):
         self.db_init()
@@ -30,7 +30,7 @@ class Main:
 
 config = ProjectConfig()
 connection = InitConnection(config)
-# connection.drop_database(config)
+connection.drop_database(config)
 connection.create_database(config)
 del connection
 
