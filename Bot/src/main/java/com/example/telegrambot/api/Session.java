@@ -1,5 +1,6 @@
 package com.example.telegrambot.api;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Session {
@@ -49,11 +50,10 @@ public class Session {
 
     @Override
     public String toString() {
-        return "Session{" +
-                "login='" + login + '\'' +
-                ", tdId='" + tdId + '\'' +
-                ", createDate=" + createDate +
-                ", token='" + token + '\'' +
-                '}';
+        return "Session" +
+                "\n\tlogin='" + login + "'," +
+                "\n\ttdId='" + tdId + "'," +
+                "\n\tcreateDate=" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").format(createDate) + ',' +
+                "\n\ttoken='" + token + '\'';
     }
 }

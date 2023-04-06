@@ -81,4 +81,9 @@ public class PostgreSqlStudentDao implements Dao<Student, Integer> {
         return students;
     }
 
+    @Override
+    public Optional<Integer> save(Student student) {
+        return Optional.empty();
+    }
+
 }

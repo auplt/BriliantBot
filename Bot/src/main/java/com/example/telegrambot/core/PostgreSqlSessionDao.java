@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -89,6 +90,13 @@ public class PostgreSqlSessionDao implements Dao<Session, Integer> {
 
         return sessions;
     }
+
+    @Override
+    public Optional<Integer> save(Session session) {
+
+        return Optional.empty();
+    }
+
 
 }
 
