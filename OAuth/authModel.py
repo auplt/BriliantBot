@@ -106,10 +106,10 @@ def authenticate(login, passwd):
                 cur = conn.cursor()
                 cur.execute(query, str(login))
                 # print("&&&&")
-                if cur.rowcount == 1:
-                    cur.execute("DELETE FROM sessions WHERE login='" + login + "'")
-                    conn.commit()
-                insert_session_db(login, tg_id, encoded_jwt)
+                # if cur.rowcount == 1:
+                #     cur.execute("DELETE FROM sessions WHERE login='" + login + "'")
+                #     conn.commit()
+                # insert_session_db(login, tg_id, encoded_jwt)
                 # print(jwt.decode(encoded_jwt, AUTHSECRET, algorithms=['HS256']))
                 # print(time_check(encoded_jwt))
                 # cur.close()
