@@ -74,11 +74,12 @@ def check_tk():
     # print (request.form)
     token = request.form.get("token")
     # print ("**",token)
-    if authModel.check_avialability(token) is not None:
+    status = False
+    if authModel.check_avialability(token) is None:
+        return {'success': status, "login": None}
+    else:
         login = authModel.check_avialability(token)
         status = authModel.check_token(token)
-    else:
-        status=False
     return {'success': status, "login": login[0]}
 
 
