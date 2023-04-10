@@ -70,8 +70,16 @@ public class MarkCommand extends CustomCommand {
 
             JSONParser parser = new JSONParser();
             JSONObject JSobj = (JSONObject) parser.parse(responseBody);
-            Student student = getStudent((String) JSobj.get("login"));
-            result = getMark(student.getRecord().toString());
+            if ((Boolean)JSobj.get("success")) {
+                Student student = getStudent((String) JSobj.get("login"));
+                result = getMark(student.getRecord().toString());
+            }
+            /* else {
+                System.out.println("Auth failed");//вызвать команду AuthCommand
+                AuthCommand auth = new AuthCommand();
+                auth.execute(absSender, user, chat, arguments);
+            }
+*/ //пока сомневаюсь как сделать else ПОМОГИТЕ 
         } catch (Exception e) {
             e.printStackTrace();
         }
