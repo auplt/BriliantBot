@@ -1,20 +1,10 @@
 from datetime import datetime
 from datetime import timedelta
-import os
 
 
-class authPayload(dict):
+class AuthPayload(dict):
 
-    def __init__(self, id, clientId, isAdmin):
-        EXPIRESSECONDS = int(30000)
-
-        # set the id of the object from Postgres
-        self.id = id
-
-        #  The client id (like the user id)
-        self.clientId = clientId
-
-        self.isAdmin = isAdmin
-
-        # set the expiry attrbute to 30 minutes
-        self.exp = datetime.utcnow() + timedelta(seconds=EXPIRESSECONDS)
+    def __init__(self, login, seconds):
+        super().__init__()
+        self.login = login  # Логин пользователя
+        self.exp = datetime.utcnow() + timedelta(seconds=seconds)  # set the expiry attrbute to 30 minutes
