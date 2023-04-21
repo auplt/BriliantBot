@@ -5,18 +5,19 @@ import traceback
 import time
 import psycopg2
 import jwt
+from pathlib import Path
 
 from authPayload import AuthPayload
 from authResponse import AuthResponse
 
-from tables.db_pass import PassTable
-from tables.db_tokens import TokensTable
-from dbconnection import DbConnection
-from dbtable import DbTable
-from project_config import ProjectConfig
+from Databases.oauthdb.tables.pass_table import PassTable
+from Databases.oauthdb.tables.tokens_table import TokensTable
+from Databases.project_config import ProjectConfig
 
 AUTHSECRET = "dlksjgf"
 EXPIRESSECONDS = 100
+
+config_path = str(Path(__file__).parents[1])
 
 
 def salt_check(client_secret_input, salt):
@@ -32,17 +33,25 @@ def salt_check(client_secret_input, salt):
 
 def authenticate(login, passwd):
     try:
-        DbTable.dbconn = DbConnection(ProjectConfig(), 'authdb')
-        pt = PassTable()
+        pt = PassTable(ProjectConfig(config_path), 'oauthdb')
         rows = pt.find_by_id(login)
 
         if rows:
             if salt_check(passwd, bytearray(rows[2], "utf-8")) == rows[1]:
-                tt = TokensTable()
+                tt = TokensTable(ProjectConfig(config_path), 'oauthdb')
                 logins = tt.find_by_id(login)
                 if logins:
                     if time_check(logins[1]):
                         return {'success': False, 'status': 'Unnecessary'}
+                    else:
+                        payload = AuthPayload(rows[0], EXPIRESSECONDS)
+                        encoded_jwt = jwt.encode(payload.__dict__, AUTHSECRET, algorithm='HS256')
+                        current_time = datetime.datetime.now()
+                        tt.update(rows[0],
+                                  [encoded_jwt, current_time, current_time + datetime.timedelta(0, EXPIRESSECONDS),
+                                   current_time, "http://"])
+                        return AuthResponse(rows[0], current_time + datetime.timedelta(0, EXPIRESSECONDS),
+                                            encoded_jwt).__dict__
 
                 payload = AuthPayload(rows[0], EXPIRESSECONDS)
                 encoded_jwt = jwt.encode(payload.__dict__, AUTHSECRET, algorithm='HS256')
@@ -61,8 +70,7 @@ def authenticate(login, passwd):
 # Проверка срока годности токена
 def check_availability(token):
     try:
-        DbTable.dbconn = DbConnection(ProjectConfig(), 'authdb')
-        tt = TokensTable()
+        tt = TokensTable(ProjectConfig(config_path), 'oauthdb')
         if tt.find_by_token(token):
             if time_check(token):
                 return {'success': True}

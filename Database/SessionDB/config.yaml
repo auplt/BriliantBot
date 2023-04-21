@@ -1,5 +1,0 @@
-user: postgres
-password: WiRe7301
-host: localhost
-database: SessionsDB
-port: 5432

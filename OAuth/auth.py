@@ -19,6 +19,8 @@ def auth():
 
     # Вызов метода authentificate
     authentication = authModel.authenticate(login, passwd)
+    if not authentication:
+        authentication = {'success': False}
     return jsonify(authentication)
 
 
