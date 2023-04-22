@@ -17,3 +17,6 @@ def avg_show():
     avg = json_d['avg_points']
     resp = {"avg_points": avg}
     return jsonify(resp)
+
+if __name__ == "__main__":
+    app.run(debug=True, port=5000)
