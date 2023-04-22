@@ -11,7 +11,6 @@ import org.apache.http.util.EntityUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Chat;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -41,19 +40,18 @@ public class MarkCommand extends CustomCommand {
     public void execute(AbsSender absSender, User user, Chat chat, String[] arguments) {
         SendMessage message = new SendMessage();
         message.setChatId(chat.getId().toString());
+        String responseBody = "";
 
-        String result = "no avg_points";
-        String responseBody ="";
         try {
-            String token="";
             Session session = getSession(user.getId().toString());
-            token = session.getToken();
+            String token = session.getToken();
 
 //            System.out.println(token);
 
-            String str = "token="+ token;
-            CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+            String str = "token=" + token;
+
             try {
+                CloseableHttpClient httpClient = HttpClientBuilder.create().build();
                 HttpPost request = new HttpPost("http://127.0.0.1:5001/brilliantbot/api/check_token");
                 StringEntity params = new StringEntity(str);
                 request.addHeader("content-type", "application/x-www-form-urlencoded");
@@ -62,30 +60,28 @@ public class MarkCommand extends CustomCommand {
                 CloseableHttpResponse response = httpClient.execute(request);
 
                 responseBody = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-//                System.out.println("Response body: " + responseBody);
-            } catch (Exception ex) {
-            } finally {
-//                @Deprecated httpClient.getConnectionManager().shutdown();
+                response.close();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
             JSONParser parser = new JSONParser();
             JSONObject JSobj = (JSONObject) parser.parse(responseBody);
-            if ((Boolean)JSobj.get("success")) {
+            if ((Boolean) JSobj.get("success")) {
                 Student student = getStudent((String) JSobj.get("login"));
-                result = getMark(student.getRecord().toString());
-            }
-            /* else {
-                System.out.println("Auth failed");//вызвать команду AuthCommand
+                String result = getMark(student.getRecord().toString());
+
+                message.setText(result);
+                execute(absSender, message, user);
+
+            } else {
+                System.out.println("Auth failed");
                 AuthCommand auth = new AuthCommand();
                 auth.execute(absSender, user, chat, arguments);
             }
-*/ //пока сомневаюсь как сделать else ПОМОГИТЕ 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        message.setText(result);
-        execute(absSender, message, user);
     }
 
     public String getMark(String login) throws IOException, ParseException {
