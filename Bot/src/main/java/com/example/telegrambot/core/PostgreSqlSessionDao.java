@@ -44,7 +44,7 @@ public class PostgreSqlSessionDao implements Dao<Session, Integer> {
                 if (resultSet.next()) {
 //                        int record = resultSet.getInt("record");
                     String login = resultSet.getString("login");
-                    Date createDate = resultSet.getDate("create_date");
+                    Date createDate = resultSet.getDate("end_date");
                     String token = resultSet.getString("token");
 
                     session = Optional.of(new Session(login, tgId, createDate, token));
