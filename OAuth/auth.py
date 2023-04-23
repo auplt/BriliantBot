@@ -15,7 +15,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 def auth():
     # Получение логина и пароля от формы
     login = request.form.get("login")
-    passwd = request.form.get("passwd")
+    passwd = request.form.get("password")
 
     # Вызов метода authentificate
     authentication = authModel.authenticate(login, passwd)
