@@ -48,7 +48,7 @@ def authenticate(login, passwd):
                             tt.update(rows[0],
                                       [encoded_jwt, current_time, current_time + datetime.timedelta(0, EXPIRESSECONDS),
                                        current_time, "http://"])
-                            return AuthResponse(rows[0], current_time + datetime.timedelta(0, EXPIRESSECONDS),
+                            return AuthResponse(rows[0], str(current_time + datetime.timedelta(0, EXPIRESSECONDS)),
                                                 encoded_jwt).__dict__
 
                 payload = AuthPayload(rows[0], EXPIRESSECONDS)
@@ -58,7 +58,8 @@ def authenticate(login, passwd):
                 tt.delete(rows[0])
                 tt.insert_one([rows[0], encoded_jwt, current_time, current_time + datetime.timedelta(0, EXPIRESSECONDS),
                                current_time, "http://"])
-                return AuthResponse(rows[0], current_time + datetime.timedelta(0, EXPIRESSECONDS), encoded_jwt).__dict__
+                return AuthResponse(rows[0], str(current_time + datetime.timedelta(0, EXPIRESSECONDS)),
+                                    encoded_jwt).__dict__
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
         print(traceback.format_exc())
