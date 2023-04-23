@@ -24,7 +24,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 import static com.example.telegrambot.core.SessionActions.getSession;
-import static com.example.telegrambot.core.StudentActions.getStudent;
+import static com.example.telegrambot.core.RecordActions.getRecord;
 
 public class MarkCommand extends CustomCommand {
 
@@ -68,7 +68,7 @@ public class MarkCommand extends CustomCommand {
             JSONParser parser = new JSONParser();
             JSONObject JSobj = (JSONObject) parser.parse(responseBody);
             if ((Boolean) JSobj.get("success")) {
-                Student student = getStudent((String) JSobj.get("login"));
+                Student student = getRecord((String) JSobj.get("login"));
                 String result = getMark(student.getRecord().toString());
 
                 message.setText(result);
