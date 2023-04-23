@@ -1,23 +1,29 @@
 <!doctype html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Аутентификация</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    <div class="form">
-        <div class="inputs">
-            <p>Введите логин:</p>
-            <input type="text" id="login">
-            <p>Введите пароль:</p>
-            <input type="password" id="password">
-            <p id="forErrors">Нажмите кнопку Подтвердить</p>
-        </div>
-        <button id="saveData">Подтвердить</button>
-    </div>
+    <form id="authorize" action="/apply/" method="POST">
+        <label>
+            <span class="input-title">Логин</span>
+            <input class="input" type="text" name="login" id="name" placeholder="Логин" required autofocus>
+        </label>
+
+        <label>
+            <span class="input-title">Пароль</span>
+            <input class="input" type="password" name="password" id="password" placeholder="Пароль" required>
+        </label>
+
+        <button class="button button-yellow" type="submit">Авторизоваться</button>
+        <div id="loader" class="hidden">Отправляем...</div>
+    </form>
     <script type="module" src="main.js"></script>
 </body>

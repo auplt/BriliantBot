@@ -1,61 +1,112 @@
-var params = window
-    .location
-    .search
-    .replace('?','')
-    .split('&')
-    .reduce(
-        function(p,e){
-            var a = e.split('=');
-            p[ decodeURIComponent(a[0])] = decodeURIComponent(a[1]);
-            return p;
-        },
-        {}
-    );
-//console.log(params['tgid']);
+function toggleLoader() {
+  const loader = document.getElementById('loader')
+  loader.classList.toggle('hidden')
+}
 
-// POST запрос на подтверждение аутентификации
-const postData = async (url = '', data = {}) => {
-    // Формируем запрос
-      return await fetch(url, {
-      method: 'POST', // Метод, если не указывать, будет использоваться GET
-      headers: {  // Заголовок запроса
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)  // Данные
-    });
-  }
+function onSuccess(formNode) {
+  alert('Авторизация выполнена!')
+}
 
+function onUnnecessary(formNode) {
+  alert('Вы уже авторизованы!')
+}
 
-function getData() {
-  var resL = document.getElementById('login').value;
-  var resP = document.getElementById('password').value;
+function onMistake(formNode) {
+  alert('Не верный логин или пароль!')
+}
 
-  var pAlert = document.getElementById('forErrors');
-  pAlert.textContent = "";
+function onError(error) {
+  alert(error.message)
+}
 
-  if (resL.length < 3) {
-    pAlert.textContent += 'Логин должен быть длинне 3 символов\n';
-    //alert('Login must contain at least 3 characters');
-  }
-  else if (resP.length < 3) {
-    pAlert.textContent += 'Пароль должен быть длинне 3 символов\n';
-    //alert('Password must contain at least 3 characters');
+function serializeForm(formNode) {
+  const data = new FormData(formNode)
+  return data
+}
+
+function checkValidity(event) {
+  const formNode = event.target.form
+  const isValid = formNode.checkValidity()
+  formNode.querySelector('button').disabled = !isValid
+}
+
+async function sendData(data) {
+  return await fetch('http://127.0.0.1:5001/brilliantbot/api/auth', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams(data),
+  })
+}
+
+async function sendSession(data) {
+  return await fetch('http://127.0.0.1:5050/api/session', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams(data),
+  })
+}
+
+async function handleFormSubmit(event) {
+  toggleLoader()
+  event.preventDefault()
+  const data = serializeForm(event.target)
+
+  let response = await sendData(data);
+
+  if (response.status === 200) {
+    let res = await response.json();
+    if (JSON.parse(JSON.stringify(res)).success === true) {
+      var session = {
+        'login': JSON.parse(JSON.stringify(res)).login,
+        'token': JSON.parse(JSON.stringify(res)).token,
+        'end_date': JSON.parse(JSON.stringify(res)).end_date
+      }
+
+      let response = await sendSession(session);
+
+      if (response.status === 200) {
+        let res = await response.json()
+        if (JSON.parse(JSON.stringify(res)).success === true) {
+          toggleLoader();
+          onSuccess(event.target);
+          toggleLoader();
+          
+        }
+        else {
+          toggleLoader();
+          onMistake(event.target);
+          toggleLoader();
+        }
+      }
+      else {
+        toggleLoader();
+        onError(res.error);
+        toggleLoader();
+      }
+    }
+    else if ('status' in res) {
+      toggleLoader();
+      onUnnecessary(event.target);
+      toggleLoader();
+    }
+    else {
+      toggleLoader();
+      onMistake(event.target);
+      toggleLoader();
+    }
   }
   else {
-    //var resp =
-    console.log(resL);
-    console.log(resP);
-    postData('http://127.0.0.1:5001/brilliantbot/api/auth', {
-      // tgid: params['tgid']
-      login: resL, password: resP
-    }).then((response) => response.json())
-    .then((data) => {
-      console.log(JSON.parse(data).success);
-      pAlert.textContent = data.success;
-    })
-    .catch((err) => {console.log(err)});
-}
+    toggleLoader();
+    onError(response.error);
+    toggleLoader();
+  }
+  document.getElementById("authorize").reset();
+  toggleLoader();
 }
 
-var subButton = document.getElementById('saveData');
-subButton.addEventListener('click', getData, false);
+
+const applicantForm = document.getElementById('authorize')
+applicantForm.addEventListener('submit', handleFormSubmit)
+applicantForm.addEventListener('input', checkValidity)
+
+applicantForm.querySelector('button').disabled = true
