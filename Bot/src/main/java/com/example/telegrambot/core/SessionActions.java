@@ -16,7 +16,7 @@ public class SessionActions {
     public static Session getSessionByID(String id) throws Exception {
 //        System.out.println(login);
         Optional<Session> session = SESSION_DAO.getById(id);
-//        System.out.println(session.toString());
+        System.out.println(session.toString());
         return session.orElseThrow(Exception::new);
     }
 

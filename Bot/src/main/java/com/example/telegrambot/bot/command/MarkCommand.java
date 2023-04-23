@@ -44,9 +44,10 @@ public class MarkCommand extends CustomCommand {
 
         try {
             Session session = getSessionByID(user.getId().toString());
+//            System.out.println(session);
             String token = session.getToken();
 
-//            System.out.println(token);
+            System.out.println(token);
 
             String str = "token=" + token;
 
@@ -67,8 +68,10 @@ public class MarkCommand extends CustomCommand {
 
             JSONParser parser = new JSONParser();
             JSONObject JSobj = (JSONObject) parser.parse(responseBody);
+            System.out.println(JSobj.get("success"));
             if ((Boolean) JSobj.get("success")) {
-                Student student = getRecord((String) JSobj.get("login"));
+                Student student = getRecord(session.getLogin());
+                System.out.println(student);
                 String result = getMark(student.getRecord().toString());
 
                 message.setText(result);
@@ -81,6 +84,9 @@ public class MarkCommand extends CustomCommand {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            System.out.println("Auth failed");
+            AuthCommand auth = new AuthCommand();
+            auth.execute(absSender, user, chat, arguments);
         }
     }
 

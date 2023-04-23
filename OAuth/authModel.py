@@ -14,7 +14,7 @@ from Databases.oauthdb.tables.tokens_table import TokensTable
 from Databases.project_config import ProjectConfig
 
 AUTHSECRET = "dlksjgf"
-EXPIRESSECONDS = 100
+EXPIRESSECONDS = 500
 
 
 def salt_check(client_secret_input, salt):

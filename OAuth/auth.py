@@ -14,11 +14,13 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 @cross_origin()  # Применение cors для этого API
 def auth():
     # Получение логина и пароля от формы
+    print(request.form)
     login = request.form.get("login")
     passwd = request.form.get("password")
 
     # Вызов метода authentificate
     authentication = authModel.authenticate(login, passwd)
+    print(authentication)
     if not authentication:
         authentication = {'success': False}
     return jsonify(authentication)
@@ -27,9 +29,11 @@ def auth():
 # Проверка времени жизни токена
 @app.route("/brilliantbot/api/check_token", methods=["POST"])
 def check_token():
+    print(request.form)
     # Получение токена из запроса
     token = request.form.get("token")
     availability = authModel.check_availability(token)
+    print(availability)
     return jsonify(availability)
 
 
