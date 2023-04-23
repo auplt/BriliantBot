@@ -13,13 +13,13 @@ import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class PostgreSqlStudentDao implements Dao<Student, Integer> {
+public class PostgreSqlRecordDao implements Dao<Student, Integer> {
 
-    private static final Logger LOGGER = Logger.getLogger(com.example.telegrambot.core.PostgreSqlStudentDao.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PostgreSqlRecordDao.class.getName());
     private final Optional<Connection> connection;
 
-    public PostgreSqlStudentDao() {
-        this.connection = JdbcStudentConnection.getConnection();
+    public PostgreSqlRecordDao() {
+        this.connection = JdbcRecordConnection.getConnection();
 
 /*  DO NOT ERASE THIS IS ANOTHER REALIZATION
         try {
@@ -82,8 +82,8 @@ public class PostgreSqlStudentDao implements Dao<Student, Integer> {
     }
 
     @Override
-    public Optional<Integer> save(Student student) {
-        return Optional.empty();
+    public void update(Student student) {
+
     }
 
 }

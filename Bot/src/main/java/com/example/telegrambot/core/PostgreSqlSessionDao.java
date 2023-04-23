@@ -3,11 +3,7 @@ package com.example.telegrambot.core;
 import com.example.telegrambot.api.Session;
 import com.example.telegrambot.spi.Dao;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.time.LocalDateTime;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -92,9 +88,31 @@ public class PostgreSqlSessionDao implements Dao<Session, Integer> {
     }
 
     @Override
-    public Optional<Integer> save(Session session) {
+    public void update(Session session) {
+        String sql = "INSERT INTO sessions (login, tg_id, end_date, token) VALUES (?, ?, ?, ?)";
 
-        return Optional.empty();
+        connection.ifPresent(conn -> {
+//                connection.setAutoCommit(false);
+
+            try {
+                PreparedStatement st = conn.prepareStatement(sql);
+                System.out.println(new java.sql.Timestamp(session.getCreateDate().getTime()));
+                java.sql.Timestamp timestamp = new java.sql.Timestamp(session.getCreateDate().getTime());
+                st.setString(1, session.getLogin());
+                st.setString(2, session.getTdId());
+                st.setTimestamp(3, new java.sql.Timestamp(session.getCreateDate().getTime()));
+                st.setString(4, session.getToken());
+//                st.executeUpdate*/();
+                int rows = st.executeUpdate();
+                System.out.println(rows);
+            } catch (SQLException e) {
+                LOGGER.log(Level.SEVERE, null, e);
+//                throw new RuntimeException(e);
+            }
+
+
+        });
+//        return Optional.empty();
     }
 
 

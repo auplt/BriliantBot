@@ -19,6 +19,10 @@ public class SessionActions {
         return session.orElseThrow(Exception::new);
     }
 
+    public static void updateSession(Session session) {
+        SESSION_DAO.update(session);
+    }
+
     public static Collection<Session> getAllSession() {
         return SESSION_DAO.getAll();
     }

@@ -9,9 +9,9 @@ public interface Dao<T, I> {
 
     Collection<T> getAll();
 //
-    Optional<I> save(T t);
+//    Optional<I> save(T t);
 //
-//    void update(T t);
+    void update(T t);
 //
 //    void delete(T t);
 }
