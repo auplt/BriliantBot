@@ -39,7 +39,7 @@ async function sendData(data) {
 }
 
 async function sendSession(data) {
-  return await fetch('http://127.0.0.1:5050/api/session', {
+  return await fetch('http://127.0.0.1:8002/telegrambot/api/session', {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: new URLSearchParams(data),

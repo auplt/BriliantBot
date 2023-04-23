@@ -38,7 +38,9 @@ public class API implements Runnable {
                 }
                 try {
                     String preparedDate = ((String) json.get("end_date")).replaceAll("%20", " ");
-                    String newDate = preparedDate.replaceAll("%3A", ":");
+                    String prepDate = preparedDate.replaceAll("%3A", ":");
+                    String newDate = prepDate.replaceAll("\\+", " ");
+
                     Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").parse(newDate);
                     final Session[] session = {new Session(json.get("login").toString(), "965427525", date, json.get("token").toString())};
                     System.out.println(session[0].toString());
@@ -54,6 +56,7 @@ public class API implements Runnable {
 
                 OutputStream outputStream = exchange.getResponseBody();
                 exchange.getResponseHeaders().set("Content-type", "application/json");
+                exchange.getResponseHeaders().set("Access-Control-Allow-Origin", "*");
                 JSONObject response = new JSONObject();
                 response.put("success", true);
 
