@@ -23,7 +23,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
-import static com.example.telegrambot.core.SessionActions.getSession;
+import static com.example.telegrambot.core.SessionActions.getSessionByID;
 import static com.example.telegrambot.core.RecordActions.getRecord;
 
 public class MarkCommand extends CustomCommand {
@@ -43,7 +43,7 @@ public class MarkCommand extends CustomCommand {
         String responseBody = "";
 
         try {
-            Session session = getSession(user.getId().toString());
+            Session session = getSessionByID(user.getId().toString());
             String token = session.getToken();
 
 //            System.out.println(token);

@@ -10,9 +10,7 @@ public class Reader {
     public Config ReadYamlAsBean() {
         Yaml yaml = new Yaml(new Constructor(Config.class));
         InputStream inputStream = this.getClass().getClassLoader().getResourceAsStream("dbconfig.yaml");
-        Config data = yaml.load(inputStream);
-        System.out.println(data);
-        return data;
+        return yaml.load(inputStream);
     }
 }
 

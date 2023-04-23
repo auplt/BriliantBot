@@ -33,9 +33,6 @@ public class JdbcSessionConnection extends JdbcBaseConnection {
     }
 
     public static void main(String[] args) {
-//        JdbcSessionConnection.getConnection();
-//        JdbcRecordConnection.getConnection();
-//        JdbcSessionConnection.getConnection();
 
         String test = "test3";
         String passwd = "ccccc";

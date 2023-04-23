@@ -21,10 +21,6 @@ public class JdbcBaseConnection {
         String user = config.getUser();
         String password = config.getPassword();
 
-        System.out.println(url);
-        System.out.println(user);
-        System.out.println(password);
-
         try {
             connection = Optional.ofNullable(DriverManager.getConnection(url, user, password));
         } catch (SQLException ex) {

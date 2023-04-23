@@ -55,6 +55,11 @@ public class PostgreSqlRecordDao implements Dao<Student, Integer> {
     }
 
     @Override
+    public Optional<Student> getById(String id) {
+        return Optional.empty();
+    }
+
+    @Override
     public Collection<Student> getAll() {
         Collection<Student> students = new ArrayList<>();
         String sql = "SELECT * FROM records";
@@ -83,6 +88,11 @@ public class PostgreSqlRecordDao implements Dao<Student, Integer> {
 
     @Override
     public void update(Student student) {
+
+    }
+
+    @Override
+    public void insert(Student student) {
 
     }
 

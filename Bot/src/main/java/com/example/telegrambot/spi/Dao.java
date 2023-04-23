@@ -7,11 +7,15 @@ public interface Dao<T, I> {
 
     Optional<T> get(String id);
 
+    Optional<T> getById(String id);
+
     Collection<T> getAll();
 //
 //    Optional<I> save(T t);
 //
     void update(T t);
+
+    void insert(T t);
 //
 //    void delete(T t);
 }
