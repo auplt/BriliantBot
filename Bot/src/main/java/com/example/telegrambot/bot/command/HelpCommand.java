@@ -17,7 +17,7 @@ public class HelpCommand extends CustomCommand {
 
     @Override
     public void execute(AbsSender absSender, User user, Chat chat, String[] arguments) {
-        StringBuilder helpMessageBuilder = new StringBuilder("<b>Available commands:</b>");
+        StringBuilder helpMessageBuilder = new StringBuilder("<b>Available commands:</b>\n");
         mCommandRegistry.getRegisteredCommands().forEach(cmd -> helpMessageBuilder.append(cmd.toString()).append("\n"));
 
         SendMessage helpMessage = new SendMessage();

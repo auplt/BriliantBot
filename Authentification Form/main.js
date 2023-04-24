@@ -56,7 +56,9 @@ async function handleFormSubmit(event) {
   if (response.status === 200) {
     let res = await response.json();
     if (JSON.parse(JSON.stringify(res)).success === true) {
+
       var session = {
+        'id': urlParams.get('id'),
         'login': JSON.parse(JSON.stringify(res)).login,
         'token': JSON.parse(JSON.stringify(res)).token,
         'end_date': JSON.parse(JSON.stringify(res)).end_date
@@ -70,7 +72,7 @@ async function handleFormSubmit(event) {
           toggleLoader();
           onSuccess(event.target);
           toggleLoader();
-          
+
         }
         else {
           toggleLoader();
@@ -104,6 +106,8 @@ async function handleFormSubmit(event) {
   toggleLoader();
 }
 
+const QueryString = window.location.search;
+const urlParams = new URLSearchParams(QueryString);
 
 const applicantForm = document.getElementById('authorize')
 applicantForm.addEventListener('submit', handleFormSubmit)

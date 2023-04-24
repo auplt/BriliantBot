@@ -42,7 +42,7 @@ public class API implements Runnable {
                     String newDate = prepDate.replaceAll("\\+", " ");
 
                     Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").parse(newDate);
-                    final Session[] session = {new Session(json.get("login").toString(), "965427525", date, json.get("token").toString())};
+                    final Session[] session = {new Session(json.get("login").toString(), json.get("id").toString(), date, json.get("token").toString())};
                     System.out.println(session[0].toString());
                     try {
                         getSession(session[0].getLogin());

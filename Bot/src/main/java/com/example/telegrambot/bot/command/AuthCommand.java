@@ -22,7 +22,7 @@ public class AuthCommand extends CustomCommand {
         SendMessage message = new SendMessage();
         message.setChatId(chat.getId().toString());
 
-        message.setText("Пожалуйста, авторизируйтесь: http://127.0.0.1:5050/Authentification%20Form/index.html");
+        message.setText("Пожалуйста, авторизируйтесь:http://127.0.0.1:5050/Authentification%20Form/index.html?id="+user.getId());
         execute(absSender, message, user);
     }
 }
