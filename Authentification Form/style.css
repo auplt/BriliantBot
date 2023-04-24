@@ -14,13 +14,24 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #18191c;
-    color: #FFFFFF;
+    background-color: #003E88;
+    color: #000000;
     font-family: "Roboto", sans-serif;
     font-size: 18px;
   }
 
+  form {
+    /* display: flex; */
+    border-radius: 6px;
+    padding: 50px;
+    /* align-items: center;  */
+    position: relative;
+    width: 500px;
+    background-color: #ffffff;
+  }
+
   label {
+    /* position: absolute; */
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -36,15 +47,15 @@ body {
   }
 
   .input, .button, .select, .checkbox-wrapper, .file-selector {
-    width: 350px;
+    width: 350;
   }
 
   .input {
-    border: 1px solid #ffffff;
+    border: 2px solid #009FE2;
     border-radius: 6px;
     padding: 10px 15px;
     background-color: transparent;
-    color: #ffffff;
+    color: #000000;
     font-family: inherit;
     font-size: inherit;
     font-weight: 300;
@@ -53,48 +64,59 @@ body {
   }
 
   .input:focus {
-    border-color: #FFD829;
+    border-color: #E6007D;
     outline: none;
   }
 
   option {
+    align-items: center;
     font-weight: inherit;
     font-family: inherit;
     font-size: inherit;
   }
 
   .button {
+    align-items: center;
     display: block;
     min-width: 210px;
     border: 2px solid transparent;
     border-radius: 6px;
     margin-left: auto;
+    margin-right: auto;
     padding: 9px 15px;
-    color: #000000;
+    color: #ffffff;
     font-size: 18px;
-    font-weight: 300;
+    font-weight: 400;
     font-family: inherit;
     transition: background-color 0.2s linear;
   }
 
   .button:hover {
-    background-color: #FFFFFF;
+    align-items: center;
+    background-color: #E6007D;
+    border: #E6007D;
+    color: #ffffff;
     cursor: pointer;
     transition: background-color 0.2s linear;
   }
 
   .button:focus-visible {
-    border: 2px solid #ffffff;
+    align-items: center;
+    border: 2px solid #E6007D;
     outline: none;
   }
 
   .button:focus {
-    border: 2px solid #ffffff;
+    align-items: center;
+    /*  */
+    border: 2px solid #A92A98;
     outline: none;
   }
 
   .button-yellow {
-    background-color: #FFD829;
+    align-items: center;
+    background-color: #009FE2;
+
   }
 
   .button:disabled {
@@ -110,7 +132,9 @@ body {
     width: 350px;
     margin-top: 25px;
     margin-left: auto;
+    margin-right: auto;
     text-align: center;
+    color: #E6007D;
   }
 
   @media (max-width: 768px) {
